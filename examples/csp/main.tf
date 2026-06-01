@@ -1,7 +1,7 @@
 module "csp_subscription" {
   source = "../.."
 
-  channel = "csp"
+  vending_machine = "csp"
   name    = "sub-csp-test"
   sku     = "Production"
 }
