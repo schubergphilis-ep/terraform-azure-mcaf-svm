@@ -1,8 +1,11 @@
 module "ea_subscription" {
   source = "../.."
 
-  tags            = { "tag1" = "value" }
   vending_machine = "ea"
+
+  tags = {
+    "tag1" = "value"
+  }
 
   vending_machine_config = {
     billing_account_name    = "1234567890"

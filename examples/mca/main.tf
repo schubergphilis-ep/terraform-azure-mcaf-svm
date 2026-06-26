@@ -2,8 +2,11 @@ module "mca_subscription" {
   source = "../.."
 
   parent_management_group_id = ""
-  tags                       = { "tag1" = "value" }
   vending_machine            = "mca"
+
+  tags = {
+    "tag1" = "value"
+  }
 
   vending_machine_config = {
     billing_account_name = "Billing Account Name"
