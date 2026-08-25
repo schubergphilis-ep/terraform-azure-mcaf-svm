@@ -11,10 +11,10 @@ variable "tags" {
 }
 
 variable "vending_machine" {
-  description = "Vending machine that produces the subscription. One of 'ea', 'mca', 'csp', or 'existing'."
+  description = "Vending machine that produces the subscription. One of 'ea', 'mca', 'csp', or 'existing'. Defaults to 'existing' purely so that `terraform init`/`validate` can resolve the module source against the bare root module (as CI does) without any inputs; real callers should always set this explicitly."
   type        = string
   const       = true
-  nullable    = false
+  default     = "existing"
 
   validation {
     condition     = contains(["ea", "mca", "csp", "existing"], var.vending_machine)
