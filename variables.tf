@@ -1,67 +1,29 @@
-variable "channel" {
+variable "parent_management_group_id" {
+  description = "Id of the parent management group the subscription should be placed under. Required for 'csp' and 'existing'; optional for 'ea' and 'mca' (where it is folded into the subscription alias body)."
   type        = string
-  description = "Billing channel to be used by the subscription"
-  nullable    = false
-
-  validation {
-    condition     = contains(["ea", "csp"], var.channel)
-    error_message = "The channel must be either 'ea' or 'csp'"
-  }
+  default     = null
 }
-
-# Required variables
-
-variable "name" {
-  type        = string
-  description = "Name of the Subscription to be created"
-  nullable    = false
-}
-
-variable "sku" {
-  type        = string
-  description = "Type of subscription to create"
-  default     = "Production"
-
-  validation {
-    condition     = contains(["Production", "DevTest"], var.sku)
-    error_message = "The subscription must be either 'Production' or 'DevTest'"
-  }
-}
-
-# Enterprise Agreement Variables
 
 variable "tags" {
+  description = "Tags to apply to the subscription."
   type        = map(string)
-  description = "Tags to add to the subscription, only needed if channel is set to ea."
   default     = null
 }
 
-variable "owner_id" {
+variable "vending_machine" {
+  description = "Vending machine that produces the subscription. One of 'ea', 'mca', 'csp', or 'existing'. Defaults to 'existing' purely so that `terraform init`/`validate` can resolve the module source against the bare root module (as CI does) without any inputs; real callers should always set this explicitly."
   type        = string
-  description = "Id of the subscription owner, only needed if channel is set to ea."
-  default     = null
+  const       = true
+  default     = "existing"
+
+  validation {
+    condition     = contains(["ea", "mca", "csp", "existing"], var.vending_machine)
+    error_message = "vending_machine must be one of 'ea', 'mca', 'csp', or 'existing'."
+  }
 }
 
-variable "billing_account_name" {
-  description = "The name of the billing account, only needed if channel is set to ea"
-  type        = string
-  default     = null
-}
-
-variable "billing_profile_name" {
-  description = "The name of the billing profile, only needed if channel is set to ea"
-  type        = string
-  default     = null
-}
-
-variable "invoice_section_name" {
-  description = "The name of the invoice section, only needed if channel is set to ea"
-  type        = string
-  default     = null
-}
-
-variable "parent_management_group_id" {
-  description = "The Id of the parent management group, only needed if channel is set to ea"
-  type        = string
-  default     = null
+variable "vending_machine_config" {
+  description = "Vending-machine-specific configuration. Shape depends on `var.vending_machine` and is validated by the selected submodule under `./modules/vending-*`."
+  type        = any
+  nullable    = false
 }

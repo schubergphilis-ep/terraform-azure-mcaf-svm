@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 1.15"
+  required_version = "~> 1.15"
 
   required_providers {
     azurerm = {
@@ -11,12 +11,4 @@ terraform {
       version = "~> 2.3"
     }
   }
-}
-
-provider "azurerm" {
-  subscription_id = "00000000-0000-0000-0000-000000000000"
-  features {}
-}
-
-provider "azapi" {
 }
